@@ -45,6 +45,7 @@
                 };
                 csharp_ls.enable = true;
                 lua_ls.enable = true;
+                jdtls.enable = true;
                 rust_analyzer = {
                     installCargo = false;
                     installRustc = false;
@@ -178,5 +179,7 @@
         copilot-lua.enable = true;
         copilot-cmp.enable = true;
         copilot-chat.enable = true;
+        dbee.enable = true;
+        typst-preview.enable = true;
     };
 }
