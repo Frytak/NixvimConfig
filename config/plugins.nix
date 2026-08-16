@@ -54,6 +54,9 @@
             };
         };
 
+        # For Neovim development
+        lazydev.enable = true;
+
         cmp = {
             enable = true;
             autoEnableSources = true;
