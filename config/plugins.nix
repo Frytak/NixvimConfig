@@ -45,6 +45,7 @@
                 };
                 csharp_ls.enable = true;
                 lua_ls.enable = true;
+                ts_ls.enable = true;
                 jdtls.enable = true;
                 rust_analyzer = {
                     installCargo = false;
