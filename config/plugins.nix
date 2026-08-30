@@ -51,6 +51,7 @@
                     installRustc = false;
                     enable = true;
                 };
+                zls.enable = true;
             };
         };
 
