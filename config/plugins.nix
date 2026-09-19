@@ -195,7 +195,7 @@
         #        };
         #    };
         #};
-        copilot-cmp.enable = true;
+        #copilot-cmp.enable = true;
         #copilot-chat.enable = true;
         dbee.enable = true;
         typst-preview.enable = true;
