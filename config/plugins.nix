@@ -1,9 +1,9 @@
 { pkgs, ... }: {
     extraPackages = with pkgs; [
         # For vimtex plugin
-        texlab
-        latexrun
-        texliveFull
+        #texlab
+        #latexrun
+        #texliveFull
     ];
 
     extraPlugins = with pkgs.vimPlugins; [
@@ -28,7 +28,7 @@
 
                 qmlls.enable = true;
                 protols.enable = true;
-                texlab.enable = true;
+                #texlab.enable = true;
                 clangd = {
                     enable = true;
                     extraOptions.cmd = [
@@ -172,31 +172,30 @@
             };
         };
 
-        vimtex = {
-            enable = true;
-            settings.view_method = "zathura";
-        };
+        #vimtex = {
+        #    enable = true;
+        #    settings.view_method = "zathura";
+        #};
 
         render-markdown.enable = true;
         markdown-preview.enable = true;
         rest.enable = true;
         treesitter.enable = true;
-        #copilot-lua = {
-        #    enable = true;
+        copilot-lua = {
+            enable = true;
 
-        #    # The v2.0.4 tag archive changed after nixpkgs recorded its hash.
-        #    # Pin the commit behind the tag so the source remains reproducible.
-        #    package = pkgs.vimPlugins.copilot-lua.overrideAttrs {
-        #        src = pkgs.fetchFromGitHub {
-        #            owner = "zbirenbaum";
-        #            repo = "copilot.lua";
-        #            rev = "407349117f176789df6ec1c23bca72f34e15b4e8";
-        #            hash = "sha256-05f76OeWBlFmlUh90tH4XMMKfNI1jnhuIJDqYPPQokA=";
-        #        };
-        #    };
-        #};
-        #copilot-cmp.enable = true;
-        #copilot-chat.enable = true;
+            # The v2.0.4 tag archive changed after nixpkgs recorded its hash.
+            # Pin the commit behind the tag so the source remains reproducible.
+            package = pkgs.vimPlugins.copilot-lua.overrideAttrs {
+                src = pkgs.fetchFromGitHub {
+                    owner = "zbirenbaum";
+                    repo = "copilot.lua";
+                    rev = "407349117f176789df6ec1c23bca72f34e15b4e8";
+                    hash = "sha256-05f76OeWBlFmlUh90tH4XMMKfNI1jnhuIJDqYPPQokA=";
+                };
+            };
+        };
+        copilot-cmp.enable = true;
         dbee.enable = true;
         typst-preview.enable = true;
     };
