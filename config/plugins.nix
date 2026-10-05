@@ -1,4 +1,6 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+
+{
     extraPackages = with pkgs; [
         # For vimtex plugin
         #texlab
@@ -76,7 +78,7 @@
                     { name = "nvim_lsp"; }
                     { name = "path"; }
                     { name = "buffer"; }
-                    { name = "copilot"; }
+                    #{ name = "copilot"; }
                 ];
             };
         };
@@ -180,22 +182,52 @@
         render-markdown.enable = true;
         markdown-preview.enable = true;
         rest.enable = true;
-        treesitter.enable = true;
-        copilot-lua = {
+        treesitter = {
             enable = true;
 
-            # The v2.0.4 tag archive changed after nixpkgs recorded its hash.
-            # Pin the commit behind the tag so the source remains reproducible.
-            package = pkgs.vimPlugins.copilot-lua.overrideAttrs {
-                src = pkgs.fetchFromGitHub {
-                    owner = "zbirenbaum";
-                    repo = "copilot.lua";
-                    rev = "407349117f176789df6ec1c23bca72f34e15b4e8";
-                    hash = "sha256-05f76OeWBlFmlUh90tH4XMMKfNI1jnhuIJDqYPPQokA=";
-                };
-            };
+            # Installing every grammar makes the first `nix run` build hundreds
+            # of derivations. Keep this in sync with the languages configured
+            # above instead.
+            grammarPackages = with pkgs.vimPlugins.nvim-treesitter.builtGrammars; [
+                bash
+                c
+                cpp
+                c_sharp
+                go
+                gomod
+                gosum
+                gowork
+                java
+                javascript
+                json
+                lua
+                markdown
+                markdown_inline
+                nix
+                ocaml
+                ocaml_interface
+                proto
+                qmldir
+                qmljs
+                rust
+                toml
+                tsx
+                typescript
+                typst
+                yaml
+                zig
+            ];
         };
-        copilot-cmp.enable = true;
+        #copilot-lua = {
+        #    enable = true;
+        #    package = copilotLua;
+        #};
+        #copilot-cmp = {
+        #    enable = true;
+        #    package = pkgs.vimPlugins.copilot-cmp.overrideAttrs {
+        #        dependencies = [ copilotLua ];
+        #    };
+        #};
         dbee.enable = true;
         typst-preview.enable = true;
     };
