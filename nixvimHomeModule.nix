@@ -11,12 +11,13 @@ in
 
         package = lib.mkOption {
             type = lib.types.package;
-            default = pkgs.nixvim;
+            default = self.packages.${pkgs.stdenv.hostPlatform.system}.default;
+            defaultText = lib.literalExpression "self.packages.\${pkgs.stdenv.hostPlatform.system}.default";
             description = "The Nixvim package to use.";
         };
     };
 
     config = lib.mkIf moduleConfig.enable {
-        home.packages = [ self.packages.${pkgs.stdenv.hostPlatform.system}.default ];
+        home.packages = [ moduleConfig.package ];
     };
 }

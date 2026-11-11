@@ -1,11 +1,24 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
+let
+    rangerConfig = pkgs.runCommandLocal "rnvimr-ranger-config" { } ''
+        mkdir -p $out
+        install -m644 ${./ranger/rc.conf} $out/rc.conf
+        install -m644 ${./ranger/rifle.conf} $out/rifle.conf
+        install -m755 ${./ranger/scope.sh} $out/scope.sh
+        substituteInPlace $out/rc.conf --replace-fail '@SCOPE_SH@' "$out/scope.sh"
+    '';
+
+    mkServer = extra: { enable = true; packageFallback = true; } // extra;
+in
 {
-    extraPackages = with pkgs; [
-        # For vimtex plugin
-        #texlab
-        #latexrun
-        #texliveFull
+    extraPackages = [ pkgs.ranger ] ++ lib.optionals pkgs.stdenv.isLinux [
+        pkgs.ueberzugpp
+        pkgs."poppler-utils"
+        pkgs.ffmpeg
+        pkgs.ffmpegthumbnailer
+        pkgs.atool
+        pkgs.bat
     ];
 
     extraPlugins = with pkgs.vimPlugins; [
@@ -18,6 +31,8 @@
 
         rnvimr_enable_ex = 1; # Enable Ranger to replace builtin Netrw to be a file explorer. (buggy)
         rnvimr_enable_picker = 1;
+        rnvimr_urc_path = rangerConfig;
+        rnvimr_ranger_cmd = [ "${pkgs.ranger}/bin/ranger" ];
     };
 
     plugins = {
@@ -25,14 +40,12 @@
             enable = true;
             servers = {
                 # Nix
-                nil_ls.enable = true;
-                nixd.enable = true;
+                nil_ls = mkServer { };
+                nixd = mkServer { };
 
-                qmlls.enable = true;
-                protols.enable = true;
-                #texlab.enable = true;
-                clangd = {
-                    enable = true;
+                qmlls = mkServer { };
+                protols = mkServer { };
+                clangd = mkServer {
                     extraOptions.cmd = [
                         "clangd"
                         "--clang-tidy"
@@ -40,21 +53,19 @@
                         "--fallback-style={IndentWidth: 4, UseTab: Never}"
                     ];
                 };
-                gopls.enable = true;
-                ocamllsp = {
-                    enable = true;
+                gopls = mkServer { };
+                ocamllsp = mkServer {
                     package = pkgs.ocamlPackages.ocaml-lsp;
                 };
-                csharp_ls.enable = true;
-                lua_ls.enable = true;
-                ts_ls.enable = true;
-                jdtls.enable = true;
-                rust_analyzer = {
+                csharp_ls = mkServer { };
+                lua_ls = mkServer { };
+                ts_ls = mkServer { };
+                jdtls = mkServer { };
+                rust_analyzer = mkServer {
                     installCargo = false;
                     installRustc = false;
-                    enable = true;
                 };
-                zls.enable = true;
+                zls = mkServer { };
             };
         };
 
@@ -78,7 +89,6 @@
                     { name = "nvim_lsp"; }
                     { name = "path"; }
                     { name = "buffer"; }
-                    #{ name = "copilot"; }
                 ];
             };
         };
@@ -90,7 +100,8 @@
         lualine = {
             enable = true;
             settings = {
-                component_seperator = null;
+                component_separators = "";
+                section_separators = "";
                 sections = {
                     lualine_a = [ "mode" ];
                     lualine_b = [ "branch" ];
@@ -174,11 +185,6 @@
             };
         };
 
-        #vimtex = {
-        #    enable = true;
-        #    settings.view_method = "zathura";
-        #};
-
         render-markdown.enable = true;
         markdown-preview.enable = true;
         rest.enable = true;
@@ -218,16 +224,6 @@
                 zig
             ];
         };
-        #copilot-lua = {
-        #    enable = true;
-        #    package = copilotLua;
-        #};
-        #copilot-cmp = {
-        #    enable = true;
-        #    package = pkgs.vimPlugins.copilot-cmp.overrideAttrs {
-        #        dependencies = [ copilotLua ];
-        #    };
-        #};
         dbee.enable = true;
         typst-preview.enable = true;
     };

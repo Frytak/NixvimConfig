@@ -1,12 +1,12 @@
 { ... }: {
     keymaps = [
-        # Copy
+        # Paste
         { mode = "n"; key = "<leader>p"; action = "\"+p"; }
         { mode = "n"; key = "<leader>P"; action = "\"+P"; }
         { mode = "v"; key = "<leader>p"; action = "\"+p"; }
         { mode = "v"; key = "<leader>P"; action = "\"+P"; }
 
-        # Paste
+        # Copy
         { mode = "n"; key = "<leader>y"; action = "\"+yy"; }
         { mode = "v"; key = "<leader>y"; action = "\"+y"; }
 
@@ -14,7 +14,6 @@
         { mode = "t"; key = "<esc>"; action = "<C-\\><C-n>"; }
 
         # Tabs
-        { mode = "n"; key = "<leader>o"; action = "<cmd>lua print \"chuj\"<enter>"; }
         { mode = "n"; key = "<leader>n"; action = "<cmd>tabnew<enter>"; }
         { mode = "n"; key = "<leader>h"; action = "<cmd>tabprevious<enter>"; }
         { mode = "n"; key = "<leader>l"; action = "<cmd>tabnext<enter>"; }

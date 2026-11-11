@@ -1,7 +1,4 @@
 { ... }: {
-    userCommands = {
-    };
-
     colorschemes.gruvbox = {
         enable = true;
     };
@@ -29,7 +26,7 @@
         # Word wrap
         breakindent = true;
         formatoptions = "l";
-        lbr = true;
+        linebreak = true;
 
         # Make the diagnostic gutter visible at all time
         signcolumn = "yes";
